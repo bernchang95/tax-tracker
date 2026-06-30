@@ -54,14 +54,27 @@ export default async function TransactionsPage({
     <>
       <Nav />
       <main className="max-w-6xl mx-auto px-4 py-8 space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-3">
           <h1 className="text-2xl font-bold tracking-tight">Transactions</h1>
-          <Link
-            href="/transactions/new"
-            className="bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded hover:bg-blue-700"
-          >
-            + Add Transaction
-          </Link>
+          <div className="flex gap-3">
+            <a
+              href={`/api/export/transactions?${new URLSearchParams({
+                ...(year ? { year } : {}),
+                ...(month ? { month } : {}),
+                ...(type ? { type } : {}),
+                ...(category ? { category } : {}),
+              }).toString()}`}
+              className="text-sm font-medium border border-neutral-300 rounded px-4 py-2 hover:bg-neutral-50"
+            >
+              Export CSV
+            </a>
+            <Link
+              href="/transactions/new"
+              className="bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded hover:bg-blue-700"
+            >
+              + Add Transaction
+            </Link>
+          </div>
         </div>
 
         {error && (
