@@ -21,6 +21,8 @@ export default function FilterBar({
       params.set(key, value);
     } else {
       params.delete(key);
+      // Clearing year makes month meaningless — drop it too
+      if (key === "year") params.delete("month");
     }
     router.push(`${pathname}?${params.toString()}`);
   }
@@ -50,10 +52,13 @@ export default function FilterBar({
       </div>
 
       <div className="flex flex-col gap-1">
-        <label className="text-xs font-medium text-neutral-500">Month</label>
+        <label className={`text-xs font-medium ${year ? "text-neutral-500" : "text-neutral-300"}`}>
+          Month <span className="font-normal">{!year && "(select year first)"}</span>
+        </label>
         <select
-          className="border border-neutral-300 rounded px-2 py-1.5 text-sm bg-white"
+          className="border border-neutral-300 rounded px-2 py-1.5 text-sm bg-white disabled:bg-neutral-100 disabled:text-neutral-400 disabled:cursor-not-allowed"
           value={month}
+          disabled={!year}
           onChange={(e) => setParam("month", e.target.value)}
         >
           <option value="">All months</option>

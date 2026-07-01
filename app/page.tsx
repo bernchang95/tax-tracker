@@ -20,13 +20,12 @@ export default async function TransactionsPage({
     .select("*, category:categories(*)")
     .order("txn_date", { ascending: false });
 
-  if (year) {
-    query = query.gte("txn_date", `${year}-01-01`).lte("txn_date", `${year}-12-31`);
-  }
   if (month && year) {
     const m = month.padStart(2, "0");
     const lastDay = new Date(Number(year), Number(month), 0).getDate();
-    query = query.gte("txn_date", `${year}-${m}-01`).lte("txn_date", `${year}-${m}-${lastDay}`);
+    query = query.gte("txn_date", `${year}-${m}-01`).lte("txn_date", `${year}-${m}-${String(lastDay).padStart(2, "0")}`);
+  } else if (year) {
+    query = query.gte("txn_date", `${year}-01-01`).lte("txn_date", `${year}-12-31`);
   }
   if (type === "income" || type === "expense") {
     query = query.eq("type", type);
