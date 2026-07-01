@@ -1,6 +1,13 @@
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+import SignOutButton from "@/app/components/SignOutButton";
 
-export default function Nav() {
+export default async function Nav() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <header className="border-b border-neutral-200">
       <div className="max-w-6xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-3">
@@ -18,6 +25,14 @@ export default function Nav() {
             Categories
           </Link>
         </nav>
+        {user && (
+          <div className="flex items-center gap-3 text-sm">
+            <span className="text-neutral-400 hidden sm:inline truncate max-w-[200px]">
+              {user.email}
+            </span>
+            <SignOutButton />
+          </div>
+        )}
       </div>
     </header>
   );

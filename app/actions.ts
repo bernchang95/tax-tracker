@@ -48,7 +48,10 @@ export async function createTransaction(formData: FormData): Promise<ActionResul
   if (parsed.error) return { error: parsed.error };
 
   const supabase = await createClient();
-  const { error } = await supabase.from("transactions").insert(parsed.data);
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: "Not authenticated." };
+
+  const { error } = await supabase.from("transactions").insert({ ...parsed.data, user_id: user.id });
   if (error) return { error: error.message };
 
   revalidatePath("/");
@@ -95,7 +98,10 @@ export async function createCategory(formData: FormData): Promise<ActionResult> 
   if (parsed.error) return { error: parsed.error };
 
   const supabase = await createClient();
-  const { error } = await supabase.from("categories").insert(parsed.data);
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: "Not authenticated." };
+
+  const { error } = await supabase.from("categories").insert({ ...parsed.data, user_id: user.id });
   if (error) return { error: error.message };
 
   revalidatePath("/categories");
