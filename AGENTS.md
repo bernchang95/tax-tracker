@@ -16,6 +16,14 @@ build the wrong thing (e.g. a marketing landing page). Open the plan and build f
 - `docs/TASKS.md`
 - `docs/TEST_PLAN.md`
 
+## Restricted Mode — dependency & config guardrails (binding)
+- **Do not install, upgrade, remove, or replace dependencies** without explicit user approval.
+- **Do not run** `npm install`, `npm update`, `npm audit fix`, `npx`, `pnpm`, `yarn`, `bun`, `pip`, curl-pipe-shell, or PowerShell download-execute commands without approval.
+- **Do not modify** `package.json`, `package-lock.json`, `.npmrc`, `.env` files, `.vscode` files, `.claude` settings, CI files, or Vercel/Supabase deployment configuration without approval.
+- **Prefer** built-in framework features and existing dependencies over adding new ones.
+- **Never use** production secrets or service-role keys in this app unless explicitly approved.
+- **Stop and warn** if a requested dependency or config change looks suspicious (supply-chain risk, unusually broad permissions, post-install scripts, etc.).
+
 ## Build rules (binding — follow in order)
 1. **Read first:** open `docs/PRD.md`, `docs/DATA_MODEL.md`, `docs/ARCHITECTURE.md`, and
    `docs/TASKS.md` before writing a single line.
